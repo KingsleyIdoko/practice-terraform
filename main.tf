@@ -8,7 +8,7 @@ resource "aws_vpc" "myapp_vpc" {
     "env_vpc":"Dev"
   }
 }
-resource "aws_subnet" "myapp-subnet-1" {.
+resource "aws_subnet" "myapp-subnet-1" {
   vpc_id     = aws_vpc.KI_development_vpc.id
   cidr_block =  var.cidr_blocks[1].cidr_block
   availability_zone = "eu-west-1b"
