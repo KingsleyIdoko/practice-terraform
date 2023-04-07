@@ -80,6 +80,13 @@ resource "aws_default_security_group" "myapp-vpc-sg" {
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
   }
+   ingress {
+    description      = "ssh traffic to the vpc"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
   egress {
     from_port        = 0
     to_port          = 0
@@ -111,6 +118,13 @@ data "aws_ami" "latest-amazon-linux-image" {
 resource "aws_instance" "myapp-ec2" {
   ami       = data.aws_ami.latest-amazon-linux-image.id
   instance_type = var.my-app-instance-type[0]
+  subnet_id = aws_subnet.myapp-subnet-1.id
+  vpc_security_group_ids = [aws_default_security_group.myapp-vpc-sg.id]
+  availability_zone = var.avail_zone[0]
+  associate_public_ip_address = true
+  key_name = "my ssh-key-pair"
+
+  user_data = file("post-deployement-config.sh")
 
 tags = {
     Name = "${var.env_prefix[0]}-myapp-ec2-instance"
