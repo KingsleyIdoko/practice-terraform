@@ -18,4 +18,8 @@ variable "env_prefix" {
     description = "enviroment description"
     default = ["Dev", "Prod"]
 }
-
+variable "my-app-instance-type" {
+    type = list(string)
+    description = "Ec2 instance type"
+    default = ["t2.micro"]
+}
